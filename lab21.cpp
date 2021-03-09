@@ -1,3 +1,4 @@
+#define _USE_MATH_DEFINES
 #include<iostream>
 #include<cmath>
 using namespace std;
@@ -28,7 +29,74 @@ ComplexNumber ComplexNumber::operator-(const ComplexNumber &c){
 	return ComplexNumber(real-c.real,imag-c.imag);
 }
 
-//Write your code here
+ComplexNumber ComplexNumber::operator*(const ComplexNumber &c){
+	return ComplexNumber(real*c.real+(-(imag*c.imag)),(real*c.imag)+(imag*c.real));
+}
+
+ComplexNumber ComplexNumber::operator/(const ComplexNumber &c){
+	double sangyook = (c.real*c.real)+(c.imag*c.imag);
+	ComplexNumber newbon = ComplexNumber(real,imag) * ComplexNumber(c.real,-c.imag);
+	double bobo1 = newbon.real / sangyook;
+	double bobo2 = newbon.imag / sangyook;
+	return ComplexNumber(bobo1,bobo2);
+}
+
+ComplexNumber operator+(double s, const ComplexNumber &c){
+	return ComplexNumber(s+c.real,c.imag);
+}
+
+ComplexNumber operator-(double s, const ComplexNumber &c){
+	return ComplexNumber(s-c.real,-c.imag);
+}
+
+ComplexNumber operator*(double s, const ComplexNumber &c){
+	return ComplexNumber(s*c.real,s*c.imag);
+}
+
+ComplexNumber operator/(double s, const ComplexNumber &c){
+	ComplexNumber bobo = ComplexNumber(s,0);
+	return ComplexNumber(bobo/c);
+}
+
+ostream & operator<<(ostream &os, const ComplexNumber &c){
+	if(c.real == 0 && c.imag == 0){
+		return os << 0;
+	}else if(c.imag == 0){
+		return os << c.real;
+	}else if(c.real == 0){
+		return os << c.imag << "i";
+	}else if(c.imag < 0){
+		return os << c.real << c.imag << "i";
+	}else if(c.real < 0){
+		return os << c.real << "+" << c.imag << "i";
+	}else{
+		return os << c.real << "+" << c.imag << "i";
+	}
+}
+
+bool ComplexNumber::operator==(const ComplexNumber &c){
+	if(real == c.real && imag == c.imag){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+bool operator==(double s, const ComplexNumber &c){
+	if(s == c.real && 0 == c.imag){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+double ComplexNumber::abs(){
+	return sqrt((real*real)+(imag*imag));
+}
+
+double ComplexNumber::angle(){
+	return atan2(imag,real) * 180 / M_PI;
+}
 
 int main(){
 	ComplexNumber a(1.5,2),b(3.2,-2.5),c(-1,1.2);	
